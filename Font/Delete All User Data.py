@@ -12,7 +12,7 @@ for g in Glyphs.font.glyphs:
 		print g.name
 		for key in ud.keys():
 			print "   ", key
-			print "       ", print ud[key]
+			print "       ", ud[key]
 			del ud[key]
 
 Glyphs.font.enableUpdateInterface()
