@@ -10,15 +10,19 @@ Glyphs.font.disableUpdateInterface()
 
 for l in Glyphs.font.selectedLayers:
 	g = l.parent
-	#print g.name, g.mastersCompatible
 	temp = g.duplicate("remove_overlap_temp")
 	temp = Glyphs.font.glyphs[temp.name]
-	#temp.beginUndo()
+	prev = None
+	compatible = True
 	for tl in temp.layers:
 		tl.removeOverlap()
-	#temp.endUndo()
+		if prev is not None:
+			if not temp.mastersCompatibleForLayers_([prev, tl]):
+				compatible = False
+				break
+		prev = tl
 	
-	if temp.mastersCompatible:
+	if compatible:
 		print "Compatible"
 		g.beginUndo()
 		for gl in g.layers:
