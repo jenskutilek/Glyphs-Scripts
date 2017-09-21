@@ -92,6 +92,7 @@ def applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0)
 	# Parse the XML
 	root = ET.fromstring(xml)
 	hintsets = root.findall("hintset")
+	seen_hints = []
 	for hintset in hintsets:
 		for stem in hintset:
 			if stem.tag == "vstem":
@@ -105,7 +106,10 @@ def applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0)
 			width = int(stem.attrib["width"])
 			hint = getHint(layer, dist_direction, pos, width, guess_ghost_direction, point_snap_tolerance)
 			if hint is not None:
-				layer.hints.append(hint)	
+				if (dist_direction, pos, width) not in seen_hints:
+					layer.hints.append(hint)
+					seen_hints.append((dist_direction, pos, width))
+				# else skip hint from a different hint set with the same direction, position and width
 			else:
 				print "Failed to apply %s at position %i, width %i." % (stem.tag, pos, width)
 
