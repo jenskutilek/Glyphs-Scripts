@@ -27,20 +27,45 @@ def findNodeWithCoordinate(layer, pos, dist_direction=0, compare_pos=0, toleranc
 		return None
 	
 
-def getHint(layer, dist_direction, pos, width):
-	originNode = findNodeWithCoordinate(layer, pos, dist_direction)
+def getHint(layer, dist_direction, pos, width, guess_ghost_direction=True, point_snap_tolerance=0):
+	originNode = findNodeWithCoordinate(
+		layer,
+		pos,
+		dist_direction,
+		compare_pos = 0,
+		tolerance = point_snap_tolerance
+	)
 	if originNode is None:
 		return None
 	
 	if width in (-20, -21):
 		# This is a ghost hint
 		newHint = GSHint()
+		if width == -20:
+			newHint.type = TOPGHOST
+		else:
+			newHint.type = BOTTOMGHOST
+			
+			if guess_ghost_direction:
+				# vfb2ufo stores all ghost links as -21 ...
+				# we have to guess if it should rather be a top ghost hint
+				for z in layer.parent.parent.masters[layer.associatedMasterId].alignmentZones:
+					if z.size > 0:
+						if z.position <= pos <= z.position + z.size:
+							newHint.type = TOPGHOST
+							break
+		
 		newHint.originNode = originNode
-		#newHint.targetNode = targetNode
 		newHint.horizontal = dist_direction
 	else:
 		origin_coords = originNode.position
-		targetNode = findNodeWithCoordinate(layer, pos + width, dist_direction, origin_coords[not dist_direction])
+		targetNode = findNodeWithCoordinate(
+			layer,
+			pos + width,
+			dist_direction,
+			compare_pos = origin_coords[not dist_direction],
+			tolerance = point_snap_tolerance
+		)
 		if targetNode is None:
 			return None
 	
@@ -52,7 +77,7 @@ def getHint(layer, dist_direction, pos, width):
 	return newHint
 
 
-def applyHintsToLayer(layer):
+def applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0):
 	
 	# Clear the current Glyphs hints
 	layer.hints = []
@@ -76,7 +101,7 @@ def applyHintsToLayer(layer):
 				continue
 			pos   = int(stem.attrib["pos"])
 			width = int(stem.attrib["width"])
-			hint = getHint(layer, dist_direction, pos, width)
+			hint = getHint(layer, dist_direction, pos, width, guess_ghost_direction, point_snap_tolerance)
 			if hint is not None:
 				layer.hints.append(hint)	
 			else:
@@ -84,5 +109,5 @@ def applyHintsToLayer(layer):
 
 
 for layer in Glyphs.font.selectedLayers:
-	applyHintsToLayer(layer)
+	applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0)
 	break
