@@ -110,4 +110,3 @@ def applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0)
 
 for layer in Glyphs.font.selectedLayers:
 	applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0)
-	break
