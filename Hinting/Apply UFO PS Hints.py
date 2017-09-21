@@ -12,6 +12,8 @@ def findNodeWithCoordinate(layer, pos, dist_direction=0, compare_pos=0, toleranc
 	candidates = []
 	for p in layer.paths:
 		for n in p.nodes:
+			if n.type == OFFCURVE:
+				continue
 			diff = abs(pos - n.position[dist_direction])
 			secondary_diff = abs(n.position[not dist_direction] - compare_pos)
 			if diff <= tolerance:
