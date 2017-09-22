@@ -40,7 +40,7 @@ def getHint(layer, dist_direction, pos, width, guess_ghost_direction=True, point
 	if originNode is None:
 		return None
 	
-	if width in (-20, -21):
+	if dist_direction == 1 and width in (-20, -21):
 		# This is a ghost hint
 		newHint = GSHint()
 		if width == -20:
@@ -56,6 +56,11 @@ def getHint(layer, dist_direction, pos, width, guess_ghost_direction=True, point
 						if z.position <= pos <= z.position + z.size:
 							newHint.type = TOPGHOST
 							break
+			if newHint.type == BOTTOMGHOST:
+				# guess again
+				bbox = layer.bounds
+				if pos == bbox.origin[dist_direction] + bbox.size[dist_direction]:
+					newHint.type = TOPGHOST
 		
 		newHint.originNode = originNode
 		newHint.horizontal = dist_direction
