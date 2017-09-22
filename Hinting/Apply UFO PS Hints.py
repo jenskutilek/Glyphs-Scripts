@@ -127,7 +127,7 @@ def applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0)
 						seen_hints.append((dist_direction, pos, width))
 					# else skip hint from a different hint set with the same direction, position and width
 				else:
-					print "Failed to apply %s at position %i, width %i in glyph %s." % (stem.tag, float(pos), float(width), layer.parent.name)
+					print "No suitable points to attach %s at %s = %g, width %g in glyph /%s could be found." % (stem.tag, "xy"[dist_direction], float(pos), float(width), layer.parent.name)
 
 
 for layer in Glyphs.font.selectedLayers:
