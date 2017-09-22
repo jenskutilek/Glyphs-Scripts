@@ -96,22 +96,33 @@ def applyHintsToLayer(layer, guess_ghost_direction=True, point_snap_tolerance=0)
 	for hintset in hintsets:
 		for stem in hintset:
 			if stem.tag == "vstem":
-				dist_direction = 0
+				hint_list = [(0, stem.attrib["pos"], stem.attrib["width"])]
+			
 			elif stem.tag == "hstem":
-				dist_direction = 1
+				hint_list = [(1, stem.attrib["pos"], stem.attrib["width"])]
+			
+			elif stem.tag == "vstem3":
+				values = stem.attrib["stem3List"].split(",")
+				hint_list = [(0, values[i], values[i+1]) for i in range(0, len(values), 2)]
+			
+			elif stem.tag == "hstem3":
+				values = stem.attrib["stem3List"].split(",")
+				hint_list = [(1, values[i], values[i+1]) for i in range(0, len(values), 2)]
+			
 			else:
 				print "Unknown element '%s' in hintset of glyphs /%s." % (stem.tag, layer.parent.name)
+				print xml
 				continue
-			pos   = int(stem.attrib["pos"])
-			width = int(stem.attrib["width"])
-			hint = getHint(layer, dist_direction, pos, width, guess_ghost_direction, point_snap_tolerance)
-			if hint is not None:
-				if (dist_direction, pos, width) not in seen_hints:
-					layer.hints.append(hint)
-					seen_hints.append((dist_direction, pos, width))
-				# else skip hint from a different hint set with the same direction, position and width
-			else:
-				print "Failed to apply %s at position %i, width %i." % (stem.tag, pos, width)
+			
+			for dist_direction, pos, width in hint_list:
+				hint = getHint(layer, dist_direction, float(pos), float(width), guess_ghost_direction, point_snap_tolerance)
+				if hint is not None:
+					if (dist_direction, pos, width) not in seen_hints:
+						layer.hints.append(hint)
+						seen_hints.append((dist_direction, pos, width))
+					# else skip hint from a different hint set with the same direction, position and width
+				else:
+					print "Failed to apply %s at position %i, width %i in glyph %s." % (stem.tag, float(pos), float(width), layer.parent.name)
 
 
 for layer in Glyphs.font.selectedLayers:
