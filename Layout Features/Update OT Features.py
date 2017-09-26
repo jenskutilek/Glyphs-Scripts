@@ -1,10 +1,13 @@
 # MenuTitle: Update OT Features With Extra Code
 # coding: utf-8
 
-__doc__="""Reads additional OpenType layout feature code from the glyphs’ userdata and appends it to automatically generated features."""
+__doc__="""
+Reads additional OpenType layout feature code from the glyphs’ userdata and appends it to automatically generated features.
+"""
 
-#Font.glyphs["j_acutecomb"].userData[userdata_key] = {"locl": "script latn;\nlanguage NLD;\nsub iacute j' by j_acutecomb; # Dutch jacute"}
-#Font.glyphs["J_acutecomb"].userData[userdata_key] = {"locl": "script latn;\nlanguage NLD;\nsub Iacute J' by J_acutecomb; # Dutch Jacute"}
+# Set user data like this:
+# Font.glyphs["j_acutecomb"].userData[userdata_key] = {"locl": "script latn;\nlanguage NLD;\nsub iacute j' by j_acutecomb; # Dutch jacute"}
+# Font.glyphs["J_acutecomb"].userData[userdata_key] = {"locl": "script latn;\nlanguage NLD;\nsub Iacute J' by J_acutecomb; # Dutch Jacute"}
 
 userdata_key = "de.kutilek.otlfc"
 
