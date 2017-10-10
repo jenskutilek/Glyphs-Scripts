@@ -26,7 +26,7 @@ def exportCallback(info):
             if not os.path.exists(xml_dir):
                 os.mkdir(xml_dir)
             if os.path.isdir(xml_dir):
-                xml_path = os.path.join(xml_dir, "%s.xml" % tail.splitext()[0])
+                xml_path = os.path.join(xml_dir, "%s.ttx" % os.path.splitext(tail)[0])
                 print "    Saving TTX dump to:", xml_path
                 f.saveXML(xml_path)
                 print "OK."
@@ -38,3 +38,4 @@ def exportCallback(info):
         print traceback.format_exc()
 
 Glyphs.addCallback(exportCallback, DOCUMENTEXPORTED)
+print "Corretto is activated."
