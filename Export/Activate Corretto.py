@@ -20,6 +20,22 @@ def exportCallback(info):
         elif font_path.endswith(".otf"):
             print "Postprocessing OTF font ..."
             f = TTFont(font_path)
+
+            # Set BlueFuzz because Glyphs doesn't export it.
+
+            if "postscriptBlueFuzz" in Glyphs.font.customParameters:
+                fuzz = Glyphs.font.customParameters["postscriptBlueFuzz"]
+                print "    Setting BlueFuzz to %i ..." % fuzz
+                tcff = f["CFF "]
+                go = tcff.getGlyphOrder() # Decompile the CFF table
+                top_dict = tcff.cff.__dict__['topDictIndex'].items[0]
+                #top_dict.decompileAllCharStrings(None)
+                top_dict.Private.rawDict["BlueFuzz"] = fuzz
+
+                # Open the font again
+                f.save(font_path)
+                f = TTFont(font_path)
+            
             head, tail = os.path.split(font_path)
             head, _ = os.path.split(head)
             xml_dir = os.path.join(head, "otf_ttx")
