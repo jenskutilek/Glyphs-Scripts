@@ -1,4 +1,4 @@
-# MenuTitle: Activate Corretto
+#MenuTitle: Activate Corretto
 
 import os
 from fontTools.ttLib import TTFont
@@ -22,19 +22,42 @@ def exportCallback(info):
             f = TTFont(font_path)
 
             # Set BlueFuzz because Glyphs doesn't export it.
+            # It does now.
 
-            if "postscriptBlueFuzz" in Glyphs.font.customParameters:
-                fuzz = Glyphs.font.customParameters["postscriptBlueFuzz"]
-                print "    Setting BlueFuzz to %i ..." % fuzz
-                tcff = f["CFF "]
-                go = tcff.getGlyphOrder() # Decompile the CFF table
-                top_dict = tcff.cff.__dict__['topDictIndex'].items[0]
-                #top_dict.decompileAllCharStrings(None)
-                top_dict.Private.rawDict["BlueFuzz"] = fuzz
+            #if "postscriptBlueFuzz" in Glyphs.font.customParameters:
+            #    fuzz = Glyphs.font.customParameters["postscriptBlueFuzz"]
+            #    print "    Setting BlueFuzz to %i ..." % fuzz
+            #    tcff = f["CFF "]
+            #    go = tcff.getGlyphOrder() # Decompile the CFF table
+            #    top_dict = tcff.cff.__dict__['topDictIndex'].items[0]
+            #    #top_dict.decompileAllCharStrings(None)
+            #    top_dict.Private.rawDict["BlueFuzz"] = fuzz
 
-                # Open the font again
-                f.save(font_path)
-                f = TTFont(font_path)
+            #    # Open the font again
+            #    f.save(font_path)
+            #    f = TTFont(font_path)
+
+            #print "    Checking StemSnap ..."
+            #tcff = f["CFF "]
+            #go = tcff.getGlyphOrder() # Decompile the CFF table
+            #top_dict = tcff.cff.__dict__['topDictIndex'].items[0].Private.rawDict
+
+            #changed = False
+            #for main, stems in (("StdHW", "StemSnapH"), ("StdVW", "StemSnapV")):
+            #    if stems in top_dict:
+            #        if top_dict[main] not in top_dict[stems]:
+            #            top_dict[stems].append(top_dict[main])
+            #            print "        Appending missing %s entry to %s." % (main, stems)
+            #            changed = True
+            #        if top_dict[stems] != sorted(top_dict[stems]):
+            #            top_dict[stems] = sorted(top_dict[stems])
+            #            print "        Sorting %s." % stems
+            #            changed = True
+
+            #if changed:
+            #    # Open the font again
+            #    f.save(font_path)
+            #    f = TTFont(font_path)
             
             head, tail = os.path.split(font_path)
             head, _ = os.path.split(head)
