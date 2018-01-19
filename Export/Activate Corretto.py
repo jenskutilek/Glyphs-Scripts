@@ -29,10 +29,7 @@ def exportCallback(info):
         if font_path.endswith(".ttf"):
             print("Fixing font with Corretto ...")
             c = Corretto(font_path, debug=False)
-            if "fpgm" in c.font:
-                unhinted = False
-            else:
-                unhinted = True
+            unhinted = "fpgm" not in c.font
             c.optimizeTTGlyphs(optimizeForUnhinted=unhinted, vHintsOnly=True, noGlyphnames=False, dont_round_glyphs=[], overlap_glyphs=[])
             c.save(font_path)
 
