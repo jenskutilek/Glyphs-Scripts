@@ -80,6 +80,9 @@ def exportCallback(info):
             
             save_as_ttx(f, font_path, "otf_ttx")
 
+        else:
+            print("ERROR: Don't know what to do with font (unknown file type):", info.object()["fontFilePath"])
+
     except:
         # Error. Print exception.
         import traceback
