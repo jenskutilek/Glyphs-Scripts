@@ -1,3 +1,4 @@
+#MenuTitle: Add Tone Mirrored Components
 
 tones = {
 	"tonebarextrahighmod": "extraHighLeftStemToneBarmod",

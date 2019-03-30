@@ -1,3 +1,5 @@
+#MenuTitle: Rename Glyphs
+
 from jkFontTools.glyphnames import get_rename_dict
 
 mapping = {

@@ -1,3 +1,5 @@
+#MenuTitle: Enable Automatic Alignment (Font-specific)
+
 for sl in Glyphs.font.selectedLayers:
 	g = sl.parent
 	for l in g.layers:

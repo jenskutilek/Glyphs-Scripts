@@ -1,3 +1,5 @@
+#MenuTitle: Disable Automatic Alignment
+
 glyphs = [l.parent for l in Glyphs.font.selectedLayers]
 
 Glyphs.font.disableUpdateInterface()

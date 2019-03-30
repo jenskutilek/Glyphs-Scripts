@@ -1,3 +1,5 @@
+#MenuTitle: Scale To Monospaced
+
 layer = Glyphs.font.selectedLayers[0] # current layer
 
 def scaleLayer(layer, width):
