@@ -95,7 +95,12 @@ def splitSegments(glyph, split_counts):
 				for i in range(count):
 					t = i / count
 					pt = split_function(t, *args)
-					pen.lineTo(pt)
+					pen.lineTo(
+						(
+							int(round(pt[0]),
+							int(round(pt[1]),
+						)
+					)
 			pen.closePath()
 
 
