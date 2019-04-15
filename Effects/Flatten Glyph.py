@@ -63,6 +63,7 @@ def getLinearPoint(t, p1, p2):
 		p1[1] + t * (p2[1] - p1[1])
 	)
 
+
 def splitSegments(glyph, split_counts):
 	"""Do the actual splitting.
 	"""
@@ -90,17 +91,15 @@ def splitSegments(glyph, split_counts):
 						(p1.x, p1.y),
 						(p2.x, p2.y),
 					]
-			
+
 				count = counts.pop()
 				for i in range(count):
 					t = i / count
 					pt = split_function(t, *args)
-					pen.lineTo(
-						(
-							int(round(pt[0]),
-							int(round(pt[1]),
-						)
-					)
+					pen.lineTo((
+						int(round(pt[0])),
+						int(round(pt[1])),
+					))
 			pen.closePath()
 
 
