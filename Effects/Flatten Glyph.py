@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function
 
 from fontTools.misc.bezierTools import calcCubicArcLength
-from math import sqrt
+from math import ceil, sqrt
 
 master_names = ["Medium 9 Clean", "Medium 8 Clean"]
 
@@ -45,5 +45,17 @@ def measureGlyph(glyph):
 	return lengths
 
 
+def calculateFlatNumbers(segment_lengths, length=30):
+	"""Calculate the number of flat segments each segment should be split into.
+	Each resulting segment should have approximately the given length.
+	"""
+	return [
+		int(ceil(max(segment_lengths[k]) / length))
+		for k in sorted(segment_lengths, reverse=True)
+	]
+
+
 arc_lengths = measureGlyph(Font.selectedLayers[0].parent)
 print(arc_lengths)
+splits = calculateFlatNumbers(arc_lengths, 10)
+print(splits)
