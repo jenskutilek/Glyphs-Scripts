@@ -63,7 +63,6 @@ def getLinearPoint(t, p1, p2):
 		p1[1] + t * (p2[1] - p1[1])
 	)
 
-
 def splitSegments(glyph, split_counts):
 	"""Do the actual splitting.
 	"""
@@ -72,7 +71,6 @@ def splitSegments(glyph, split_counts):
 		counts = split_counts[:]
 		pen = layer.getPen()
 		for path in layer.background.paths:
-			pen.beginPath()
 			pt = path.segments[0][0]
 			pen.moveTo((pt.x, pt.y))
 			for segment in path.segments:
