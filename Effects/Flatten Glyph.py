@@ -2,6 +2,7 @@
 from __future__ import absolute_import, division, print_function
 
 from fontTools.misc.bezierTools import calcCubicArcLength
+from math import sqrt
 
 master_names = ["Medium 9 Clean", "Medium 8 Clean"]
 
@@ -11,17 +12,20 @@ masters = {
 }
 
 
-def measureGlyph(g):
-	print(g)
-	arc_lengths = {}
-	for master_name in master_names:
-		arc_lengths[master_name] = {}
-		layer = g.layers[masters[master_name]]
-		print(layer)
-		for i in range(len(layer.paths)):
-			path = layer.paths[i]
-			for j in range(len(path.segments)):
-				s = path.segments[j]
+def measureGlyph(glyph):
+	"""Measure the segment lengths of all layers given in master_names.
+	Returns a dictionary with keys of (path_index, segment_index) and
+	values of a list of segment lengths.
+	"""
+	lengths = {}
+	# Reference layer, just used for counting paths and segments
+	ref_layer = glyph.layers[masters[master_names[0]]]
+	for i in range(len(ref_layer.paths)):
+		for j in range(len(ref_layer.paths[i].segments)):
+			segment_lengths = []
+			for master_name in master_names:
+				layer = glyph.layers[masters[master_name]]
+				s = layer.paths[i].segments[j]
 				if len(s) == 4:
 					# curve
 					p0, p1, p2, p3 = s
@@ -29,9 +33,16 @@ def measureGlyph(g):
 					p1 = p1.x, p1.y
 					p2 = p2.x, p2.y
 					p3 = p3.x, p3.y
-					arc_lengths[master_name][(i, j)] = int(round(calcCubicArcLength(p0, p1, p2, p3)))
-
-	return arc_lengths
+					l = calcCubicArcLength(p0, p1, p2, p3)
+				elif len(s) == 2:
+					p0, p1 = s
+					l = sqrt((p1.y - p0.y)**2 + (p1.x - p0.x)**2)
+				else:
+					print("Unknown segment type:", s)
+					l = 0
+				segment_lengths.append(int(round(l)))
+			lengths[(i, j)] = segment_lengths
+	return lengths
 
 
 arc_lengths = measureGlyph(Font.selectedLayers[0].parent)
