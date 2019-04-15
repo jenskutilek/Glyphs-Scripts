@@ -90,7 +90,7 @@ def splitSegments(glyph, split_counts):
 						(p1.x, p1.y),
 						(p2.x, p2.y),
 					]
-
+			
 				count = counts.pop()
 				for i in range(count):
 					t = i / count
