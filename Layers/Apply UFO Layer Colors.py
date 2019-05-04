@@ -20,11 +20,15 @@ color_map = {
 }
 
 set_colors = True
+unset_userdata_colors = False
 used_colors = set()
 
 for glyph in Font.glyphs:
     for layer in glyph.layers:
-        rgba = layer.userData.get("com.typemytype.robofont.mark", (0, 0, 0, 0))
+        rgba = layer.userData.get(
+            "com.typemytype.robofont.mark", # Actually also used by vfb2ufo
+            None
+        )
         if rgba is None:
             if set_colors:
                 layer.color = 9223372036854775807
@@ -38,6 +42,8 @@ for glyph in Font.glyphs:
                     layer.color = color
             else:
                 used_colors |= set([(r, g, b, a)])
+            if unset_userdata_colors:
+                del layer.userData["com.typemytype.robofont.mark"]
 
         # print(glyph.name, layer, r, g, b, a)
 
