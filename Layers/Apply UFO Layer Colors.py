@@ -1,6 +1,7 @@
 # MenuTitle: Apply UFO Layer Colors
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from AppKit import NSColor
 
 color_map = {
     # RGBA to Glyphs color index, see https://docu.glyphsapp.com/#GSLayer.color
@@ -37,14 +38,15 @@ for glyph in Font.glyphs:
             if set_colors:
                 color = color_map.get((r, g, b, a), None)
                 if color is None:
-                    print("Unknown color (%g, %g, %g, %g), please add a mapping for it in the script." % (r, g, b, a))
+                    layer.colorObject = NSColor.colorWithDeviceRed_green_blue_alpha_(r, g, b, a)
+                    if (r, g, b, a) not in used_colors:
+                        print("INFO: Unknown color (%g, %g, %g, %g) was applied directly, you may want to add a mapping for it in the script." % (r, g, b, a))
                 else:
                     layer.color = color
-            else:
-                used_colors |= set([(r, g, b, a)])
+            used_colors |= set([(r, g, b, a)])
             if unset_userdata_colors:
                 del layer.userData["com.typemytype.robofont.mark"]
 
         # print(glyph.name, layer, r, g, b, a)
 
-print(list(used_colors))
+print("Colors used in font:", list(used_colors))
