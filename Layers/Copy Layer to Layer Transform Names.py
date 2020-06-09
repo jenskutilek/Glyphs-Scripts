@@ -1,5 +1,7 @@
 #MenuTitle: Copy Layer to Layer, Transform Glyph Names
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 __doc__="""
 Copies one master to another master's or background in selected glyphs.
 """

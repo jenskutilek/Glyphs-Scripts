@@ -1,6 +1,7 @@
 # MenuTitle: Apply UFO Layer Colors
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 from AppKit import NSColor
 
 color_map = {

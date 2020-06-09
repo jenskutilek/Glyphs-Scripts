@@ -1,4 +1,5 @@
 #MenuTitle: Enable Automatic Alignment (Font-specific)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 for sl in Glyphs.font.selectedLayers:
     g = sl.parent

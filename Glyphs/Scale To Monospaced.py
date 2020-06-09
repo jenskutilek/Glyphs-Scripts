@@ -1,14 +1,15 @@
 #MenuTitle: Scale To Monospaced
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 layer = Glyphs.font.selectedLayers[0] # current layer
 
 def scaleLayer(layer, width):
 	
-	print layer.parent.name, layer.width
+	print(layer.parent.name, layer.width)
 	
 	x_scale = width / layer.width
 	
-	print x_scale
+	print(x_scale)
 	
 	layer.applyTransform([
 		x_scale, # x scale factor

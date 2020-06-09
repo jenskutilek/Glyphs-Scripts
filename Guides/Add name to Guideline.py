@@ -1,5 +1,7 @@
 #MenuTitle: Add name to Guideline
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 __doc__="""
 (UI) Add name to guideline.
 """

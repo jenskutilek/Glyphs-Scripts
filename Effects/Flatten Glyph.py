@@ -1,5 +1,5 @@
 # MenuTitle: Flatten Glyph MM
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from fontPens.penTools import getCubicPoint
 from fontTools.misc.bezierTools import calcCubicArcLength

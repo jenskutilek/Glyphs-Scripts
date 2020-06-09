@@ -1,4 +1,5 @@
 #MenuTitle: Copy Glyphs From Layer For Selection
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from robofab.world import AllFonts, CurrentFont
 from robofab.interface.all.dialogs import SelectFont
@@ -9,7 +10,7 @@ f = CurrentFont()
 
 selection_names = f.selection[:]
 
-print sm
+print(sm)
 
 for n in selection_names:
 	if n in sm:
@@ -21,5 +22,5 @@ for n in selection_names:
 		f[n].appendGlyph(source_glyph)
 		f[n].width = source_glyph.width
 	else:
-		print "Glyph '%s' does not exist in source master %s." % (n, sm)
+		print("Glyph '%s' does not exist in source master %s." % (n, sm))
 f.update()

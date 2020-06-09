@@ -1,8 +1,10 @@
 # MenuTitle: Update OT Features With Extra Code
 # coding: utf-8
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-__doc__="""
-Reads additional OpenType layout feature code from the glyphs’ userdata and appends it to automatically generated features.
+__doc__ = """
+Reads additional OpenType layout feature code from the glyphs’ userdata and
+appends it to automatically generated features.
 """
 
 # Set user data like this:
@@ -13,6 +15,7 @@ userdata_key = "de.kutilek.otlfc"
 
 keywords = ["sub", "pos", "by"]
 
+
 def cleanup_code(code):
 	# Remove comments and reformat lines to end with ;
 	long = ""
@@ -22,18 +25,22 @@ def cleanup_code(code):
 		code_comments = line.split("#", 1)
 		code = code_comments[0].strip()
 		long += code
-	#return long
+	# return long
 	new_lines = long.split(';')
 	new_lines = ";\n".join(new_lines)
 	new_lines = new_lines.split('{')
 	new_lines = "{\n".join(new_lines)
-	#print new_lines
+	# print new_lines
 	return new_lines.splitlines()
 
 
 def extract_glyph_names(code):
 	# for substitution only!
-	names = [n.strip("[']") for n in code.strip(";").split() if not n in keywords and not n.startswith("@")]
+	names = [
+		n.strip("[']")
+		for n in code.strip(";").split()
+		if n not in keywords and not n.startswith("@")
+	]
 	# TODO: positioning
 	return names
 
@@ -70,7 +77,7 @@ def collect_feature_code(font):
 									features[tag][current_script][current_language] = [line]
 								else:
 									features[tag][current_script][current_language].append(line)
-	print features
+	print(features)
 	return features
 
 
@@ -95,7 +102,7 @@ def get_feature_code(code_dict):
 			for c in d1:
 				result += " " * indent + "%s\n" % c
 	return result
-	
+
 
 def apply_features(font, feature_dict):
 	existing_tags = [f.name for f in font.features]
@@ -109,13 +116,10 @@ def apply_features(font, feature_dict):
 				fea.update()
 				if tag == fea.name:
 					fea.code += get_feature_code(code)
-					#print get_feature_code(code)
-					print "*** %s is now:" % tag
-					print fea.code
+					# print get_feature_code(code)
+					print("*** %s is now:" % tag)
+					print(fea.code)
 					break
-						
-
-
 
 
 f = collect_feature_code(Font)

@@ -1,14 +1,14 @@
-#MenuTitle: Set Master Grid
+# MenuTitle: Set Master Grid
 # -*- coding: utf-8 -*-
-__doc__="""
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+__doc__ = """
 Set or delete the local grid for the current layer.
 """
 
 import vanilla
 
 plugin_key = "de.kutilek.MasterGrid"
-
-
 
 
 def getGrid(master):
@@ -54,18 +54,16 @@ def CurrentMaster():
 	return master
 
 
-
-
 class GridDialog(object):
 
 	def __init__(self):
 		self.w = vanilla.Window(
 			(300, 160),
-			"Master Grid", 
+			"Master Grid",
 		)
 		y = 8
 		self.w.master_name = vanilla.TextBox((8, y, -8, 17), "Set local grid for master: None")
-		
+
 		y += 28
 		x = 8
 		self.w.label_x = vanilla.TextBox((x, y, 30, 17), "X:")
@@ -73,7 +71,7 @@ class GridDialog(object):
 		x = 88
 		self.w.label_y = vanilla.TextBox((x, y, 30, 17), "Y:")
 		self.w.y = vanilla.EditText((x + 22, y-3, 40, 24))
-		
+
 		y += 32
 		self.w.grid_type_label = vanilla.TextBox((8, y, 66, 17), "Grid is in:")
 		self.w.grid_type = vanilla.RadioGroup(
@@ -81,7 +79,7 @@ class GridDialog(object):
 			["Absolute font units", "UPM subdivision"],
 			isVertical = True,
 		)
-		
+
 		self.w.button_cancel = vanilla.Button(
 			(-272, -30, -204, -10),
 			"Cancel",
@@ -100,15 +98,14 @@ class GridDialog(object):
 		self.update()
 		self.w.open()
 		self.w.makeKey()
-	
-	
+
 	def update(self):
 		self.master = CurrentMaster()
 		if self.master is None:
 			self.w.master_name.set("Set local grid for master: None")
 			self.w.x.set("0")
 			self.w.y.set("0")
-			
+
 			self.w.x.enable(False)
 			self.w.y.enable(False)
 			self.w.grid_type.enable(False)
@@ -123,23 +120,20 @@ class GridDialog(object):
 				self.w.grid_type.set(1)
 			else:
 				self.w.grid_type.set(0)
-			
+
 			self.w.x.enable(True)
 			self.w.y.enable(True)
 			self.w.grid_type.enable(True)
 			self.w.button_delete.enable(True)
 			self.w.button_set.enable(True)
-		
-	
+
 	def callback_cancel(self, info):
 		self.w.close()
-	
-	
+
 	def callback_delete(self, info):
 		deleteGrid(self.master)
 		self.w.close()
-	
-	
+
 	def callback_set(self, info):
 		gx = self.w.x.get()
 		gy = self.w.y.get()
@@ -154,7 +148,7 @@ class GridDialog(object):
 			gxf = float(gx)
 			gyf = float(gy)
 		except ValueError:
-			print "Please enter a floating point number or an integer number."
+			print("Please enter a floating point number or an integer number.")
 			return
 		if gxf == gxi:
 			gx = gxi
@@ -166,8 +160,6 @@ class GridDialog(object):
 			gy = gyf
 		setGrid(self.master, gx, gy, grid_type)
 		self.w.close()
-
-
 
 
 GridDialog()

@@ -1,4 +1,5 @@
 #MenuTitle: Rename Glyphs
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from jkFontTools.glyphnames import get_rename_dict
 
