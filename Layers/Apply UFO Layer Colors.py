@@ -1,13 +1,18 @@
 # MenuTitle: Apply UFO Layer Colors
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 from AppKit import NSColor
 
 color_map = {
     # RGBA to Glyphs color index, see https://docu.glyphsapp.com/#GSLayer.color
     (1.0, 0.6, 0.647, 1.0): 0,  # red
-    (1.0, 0.6, 0.6, 1.0):   0,  # red
+    (1.0, 0.6, 0.6, 1.0): 0,  # red
     (1.0, 0.873, 0.6, 1.0): 1,  # orange
     (1.0, 0.666, 0.6, 1.0): 2,  # brown
     (1.0, 0.976, 0.6, 1.0): 3,  # yellow
@@ -28,8 +33,8 @@ used_colors = set()
 for glyph in Font.glyphs:
     for layer in glyph.layers:
         rgba = layer.userData.get(
-            "com.typemytype.robofont.mark", # Actually also used by vfb2ufo
-            None
+            "com.typemytype.robofont.mark",  # Actually also used by vfb2ufo
+            None,
         )
         if rgba is None:
             if set_colors:
@@ -39,9 +44,14 @@ for glyph in Font.glyphs:
             if set_colors:
                 color = color_map.get((r, g, b, a), None)
                 if color is None:
-                    layer.colorObject = NSColor.colorWithDeviceRed_green_blue_alpha_(r, g, b, a)
+                    layer.colorObject = NSColor.colorWithDeviceRed_green_blue_alpha_(
+                        r, g, b, a
+                    )
                     if (r, g, b, a) not in used_colors:
-                        print("INFO: Unknown color (%g, %g, %g, %g) was applied directly, you may want to add a mapping for it in the script." % (r, g, b, a))
+                        print(
+                            "INFO: Unknown color (%g, %g, %g, %g) was applied directly, you may want to add a mapping for it in the script."
+                            % (r, g, b, a)
+                        )
                 else:
                     layer.color = color
             used_colors |= set([(r, g, b, a)])

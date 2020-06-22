@@ -1,5 +1,10 @@
-#MenuTitle: Activate Corretto
-from __future__ import absolute_import, division, print_function, unicode_literals
+# MenuTitle: Activate Corretto
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import os
 from fontTools.ttLib import TTFont
@@ -23,18 +28,25 @@ def save_as_ttx(font, font_path, subfolder):
 
 def exportCallback(info):
     try:
-        #font_path = info.object()
+        # font_path = info.object()
+        print(info.object())
         font_path = info.object()["fontFilePath"]
-        font_inst = info.object()["instance"]
+        # font_inst = info.object()["instance"]
         if font_path.endswith(".ttf"):
             print("Fixing font with Corretto ...")
             c = Corretto(font_path, debug=False)
             unhinted = "fpgm" not in c.font
-            c.optimizeTTGlyphs(optimizeForUnhinted=unhinted, vHintsOnly=True, noGlyphnames=False, dont_round_glyphs=[], overlap_glyphs=[])
+            c.optimizeTTGlyphs(
+                optimizeForUnhinted=unhinted,
+                vHintsOnly=True,
+                noGlyphnames=False,
+                dont_round_glyphs=[],
+                overlap_glyphs=[],
+            )
             c.save(font_path)
 
             save_as_ttx(c.font, font_path, "ttf_ttx")
-            
+
             print("OK.")
         elif font_path.endswith(".otf"):
             print("Postprocessing OTF font ...")
@@ -43,7 +55,7 @@ def exportCallback(info):
             # Set BlueFuzz because Glyphs doesn't export it.
             # It does now.
 
-            #if "postscriptBlueFuzz" in Glyphs.font.customParameters:
+            # if "postscriptBlueFuzz" in Glyphs.font.customParameters:
             #    fuzz = Glyphs.font.customParameters["postscriptBlueFuzz"]
             #    print("    Setting BlueFuzz to %i ..." % fuzz)
             #    tcff = f["CFF "]
@@ -56,13 +68,13 @@ def exportCallback(info):
             #    f.save(font_path)
             #    f = TTFont(font_path)
 
-            #print("    Checking StemSnap ...")
-            #tcff = f["CFF "]
-            #go = tcff.getGlyphOrder() # Decompile the CFF table
-            #top_dict = tcff.cff.__dict__['topDictIndex'].items[0].Private.rawDict
+            # print("    Checking StemSnap ...")
+            # tcff = f["CFF "]
+            # go = tcff.getGlyphOrder() # Decompile the CFF table
+            # top_dict = tcff.cff.__dict__['topDictIndex'].items[0].Private.rawDict
 
-            #changed = False
-            #for main, stems in (("StdHW", "StemSnapH"), ("StdVW", "StemSnapV")):
+            # changed = False
+            # for main, stems in (("StdHW", "StemSnapH"), ("StdVW", "StemSnapV")):
             #    if stems in top_dict:
             #        if top_dict[main] not in top_dict[stems]:
             #            top_dict[stems].append(top_dict[main])
@@ -73,20 +85,25 @@ def exportCallback(info):
             #            print("        Sorting %s." % stems)
             #            changed = True
 
-            #if changed:
+            # if changed:
             #    # Open the font again
             #    f.save(font_path)
             #    f = TTFont(font_path)
-            
+
             save_as_ttx(f, font_path, "otf_ttx")
 
         else:
-            print("ERROR: Don't know what to do with font (unknown file type):", info.object()["fontFilePath"])
+            print(
+                "ERROR: Don't know what to do with font (unknown file type):",
+                info.object()["fontFilePath"],
+            )
 
     except:
         # Error. Print exception.
         import traceback
+
         print(traceback.format_exc())
+
 
 Glyphs.addCallback(exportCallback, DOCUMENTEXPORTED)
 print("Corretto is activated.")

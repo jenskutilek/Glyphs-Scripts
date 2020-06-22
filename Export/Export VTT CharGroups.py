@@ -1,9 +1,14 @@
 # MenuTitle: Export VTT CharGroups
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 f = Font
 
-data = '''/*****
+data = """/*****
 
 CharGrp.txt
 
@@ -23,48 +28,57 @@ Microsoft Unicode (character code)
 
 *****/
 
-'''
+"""
 
 glyph_groups = {
-	("Letter", "Uppercase"):     "UPPERCASE",
-	("Letter", "Lowercase"):     "LOWERCASE",
-	("Number", "Decimal Digit"): "FIGURE",
-	("Number", "Other"):         "FIGURE",
-	
+    ("Letter", "Uppercase"): "UPPERCASE",
+    ("Letter", "Lowercase"): "LOWERCASE",
+    ("Number", "Decimal Digit"): "FIGURE",
+    ("Number", "Other"): "FIGURE",
 }
 
+
 def get_glyphgroup(g):
-	group = glyph_groups.get((g.category, g.subCategory), "OTHER")
-	return group
-	
+    group = glyph_groups.get((g.category, g.subCategory), "OTHER")
+    return group
+
 
 i = 3
 for g in f.glyphs:
-	if g.export:
-		final_name = g.name if g.productionName is None else g.productionName
-		if g.unicode is None:
-			u = None
-			if "." in g.name:
-				base_name = g.name.split(".", 1)[0]
-				if base_name in f.glyphs:
-					u = f.glyphs[base_name].unicode
-			elif "_" in g.name:
-				base_name = g.name.split("_", 1)[0]
-				if base_name in f.glyphs:
-					u = f.glyphs[base_name].unicode
-			if u is not None:
-				u = int(u, 16)
-		else:
-			u = int(g.unicode, 16)
-		
-		group = get_glyphgroup(g)
-		
-		if u is None:
-			data += '*         *       *         %5i    %9s    %s\n' % (i, group, final_name)
-		else:
-			data += '0x%04X    *       0x%04X    %5i    %9s    %s\n' % (u, u, i, group, final_name)
-		
-		i += 1
+    if g.export:
+        final_name = g.name if g.productionName is None else g.productionName
+        if g.unicode is None:
+            u = None
+            if "." in g.name:
+                base_name = g.name.split(".", 1)[0]
+                if base_name in f.glyphs:
+                    u = f.glyphs[base_name].unicode
+            elif "_" in g.name:
+                base_name = g.name.split("_", 1)[0]
+                if base_name in f.glyphs:
+                    u = f.glyphs[base_name].unicode
+            if u is not None:
+                u = int(u, 16)
+        else:
+            u = int(g.unicode, 16)
 
-print data
+        group = get_glyphgroup(g)
 
+        if u is None:
+            data += "*         *       *         %5i    %9s    %s\n" % (
+                i,
+                group,
+                final_name,
+            )
+        else:
+            data += "0x%04X    *       0x%04X    %5i    %9s    %s\n" % (
+                u,
+                u,
+                i,
+                group,
+                final_name,
+            )
+
+        i += 1
+
+print(data)

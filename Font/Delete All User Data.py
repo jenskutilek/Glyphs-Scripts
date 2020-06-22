@@ -12,16 +12,16 @@ for g in Glyphs.font.glyphs:
 	if ud:
 		print(g.name)
 		for key in ud.keys():
-			print "   ", key
-			print "       ", ud[key]
+			print("   ", key)
+			print("       ", ud[key])
 			del ud[key]
 	for layer in g.layers:
 		ud = layer.userData
 		if ud:
-			print g.name
+			print(g.name)
 			for key in ud.keys():
-				print "   ", key
-				print "       ", ud[key]
+				print("   ", key)
+				print("       ", ud[key])
 				del ud[key]
 
 Glyphs.font.enableUpdateInterface()
