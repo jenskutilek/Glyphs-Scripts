@@ -6,13 +6,16 @@ from __future__ import (
     unicode_literals,
 )
 
+from GlyphsApp import Glyphs
+
 __doc__ = """
-Remove hints in selected layers
+Remove hints in selected layers. Dangerous: Also removes any corner or cap
+components.
 """
 
 Glyphs.font.disableUpdateInterface()
 
-for l in Glyphs.font.selectedLayers:
-    l.hints = []
+for layer in Glyphs.font.selectedLayers:
+    layer.hints = []
 
 Glyphs.font.enableUpdateInterface()
