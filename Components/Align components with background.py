@@ -1,9 +1,15 @@
 # MenuTitle: Align Components With Background
+from GlyphsApp import Glyphs
+
 
 l = Glyphs.font.selectedLayers[0]
 for c in l.components:
     if c.automaticAlignment:
-        continue
+        if not c.selected:
+            print(f"Skipping auto-aligned component: {c.name}")
+            continue
+        print(f"Disabling auto-alignment for selected component: {c.name}")
+        c.automaticAlignment = False
     cbox = c.bounds
     for p in l.background.paths:
         pbox = p.bounds
