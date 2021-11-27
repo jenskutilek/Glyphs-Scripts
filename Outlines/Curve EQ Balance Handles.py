@@ -5,6 +5,8 @@ Triangle Geometry helpers
 """
 
 from math import atan2, cos, pi, sin, sqrt
+from GlyphsApp import Glyphs, GSOFFCURVE
+
 
 # helper functions
 
@@ -181,29 +183,24 @@ def balance_segment(segment):
 	
 def balance_layer(layer):
 	segments = []
-	for p in layer.paths:
-		segment = []
-		seenOnCurve = False
-		for n in p.nodes:
-			if n.selected:
-				if seenOnCurve:
-					if n.type == GSCURVE:
-						if segment:
-							# End segment
-							segment.append(n)
-							segments.append(segment)
-							segment = [n]
-					else:
-						segment.append(n)
+	first_offcurve = True
+	for path in layer.paths:
+		node_index = 0
+		for n in path.nodes:
+			if n.type == GSOFFCURVE:
+				if first_offcurve:
+					# Skip first offcurve point
+					first_offcurve = False
 				else:
-					if n.type in (GSCURVE, GSLINE):
-						# Start of selected segment
-						seenOnCurve = True
-						segment.append(n)
-			else:
-				if segment:
-					# Remove "dangling" selection
-					segment = []
+					if n in layer.selection:
+						segments.append([
+							path.nodeAtIndex_(node_index - 2),
+							path.nodeAtIndex_(node_index - 1),
+							n,
+							path.nodeAtIndex_(node_index + 1)
+						])
+					first_offcurve = True
+			node_index += 1
 	
 	[balance_segment(s) for s in segments]
 
