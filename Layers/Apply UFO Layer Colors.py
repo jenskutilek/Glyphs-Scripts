@@ -1,4 +1,4 @@
-# MenuTitle: Apply UFO Layer Colors
+# MenuTitle: Apply UFO Layer Colors With Mapping
 # -*- coding: utf-8 -*-
 from __future__ import (
     absolute_import,
