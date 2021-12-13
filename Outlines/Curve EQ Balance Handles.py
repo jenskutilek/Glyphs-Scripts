@@ -186,21 +186,19 @@ def balance_layer(layer):
 	first_offcurve = True
 	for path in layer.paths:
 		node_index = 0
-		for n in path.nodes:
+		for node_index, n in enumerate(path.nodes):
 			if n.type == GSOFFCURVE:
-				if first_offcurve:
-					# Skip first offcurve point
-					first_offcurve = False
-				else:
-					if n in layer.selection:
-						segments.append([
-							path.nodeAtIndex_(node_index - 2),
-							path.nodeAtIndex_(node_index - 1),
-							n,
-							path.nodeAtIndex_(node_index + 1)
-						])
-					first_offcurve = True
-			node_index += 1
+				if path.nodeAtIndex_(node_index + 1).type == GSOFFCURVE:
+					# Skip first offcurve
+					continue
+
+				if n in layer.selection:
+					segments.append([
+						path.nodeAtIndex_(node_index - 2),
+						path.nodeAtIndex_(node_index - 1),
+						n,
+						path.nodeAtIndex_(node_index + 1)
+					])
 	
 	[balance_segment(s) for s in segments]
 
