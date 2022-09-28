@@ -3,7 +3,9 @@ import codecs
 
 from GlyphsApp import Glyphs, GetSaveFile, Message
 
-__doc__ = "Export a .nam file that contains Unicode values and their assigned glyph names."
+__doc__ = """
+Export a .nam file that contains Unicode values and their assigned glyph names.
+"""
 
 font = Glyphs.font
 
@@ -26,7 +28,10 @@ if out_path:
             if key not in mappings:
                 mappings[key] = g.name
             else:
-                Message(f"Found duplicate Unicode mapping: {key} in {g.name} and {mappings[key]}, please fix.")
+                Message(
+                    f"Found duplicate Unicode mapping: {key} in {g.name} and "
+                    f"{mappings[key]}, please fix."
+                )
 
     with codecs.open(out_path, "wb", "utf-8") as f:
         f.write(header)

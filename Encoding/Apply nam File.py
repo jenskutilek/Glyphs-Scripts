@@ -3,7 +3,12 @@ import codecs
 
 from GlyphsApp import Glyphs, GetOpenFile, Message, GSFont
 
-__doc__ = "Import a .nam file that contains Unicode values and their assigned glyph names, and apply it to the current font. Glyphs in the font that are not in the nametable file have their Unicode values removed."
+__doc__ = """
+Import a .nam file that contains Unicode values and their assigned glyph names,
+and apply it to the current font. Glyphs in the font that are not in the
+nametable file have their Unicode values removed.
+"""
+
 
 def clear_unicodes(font: GSFont) -> None:
     font.disableUpdateInterface()
@@ -30,7 +35,10 @@ if nam_path:
         Message("The file is too short.")
     else:
         if not lines[0].startswith(r"%%FONTLAB NAMETABLE:"):
-            Message("The file is missing the nametable header. Does it have the correct type?")
+            Message(
+                "The file is missing the nametable header. Does it have the "
+                "correct type?"
+            )
         else:
             i = 0
             for line in lines:
@@ -53,7 +61,7 @@ if nam_path:
                         mappings[name] = [uni[2:]]
                 i += 1
     if not mappings:
-        Message(f"No Unicode mappings could be found, font is unchanged.")
+        Message("No Unicode mappings could be found, font is unchanged.")
     else:
         font.disableUpdateInterface()
         for g in font.glyphs:
@@ -70,4 +78,8 @@ if nam_path:
             if g.unicodes:
                 unicodes.extend(g.unicodes)
             if len(unicodes) != len(set(unicodes)):
-                Message("The font now contains duplicate Unicode values, please check")
+                duplicates = [u for u in unicodes if unicodes.count(u) > 1]
+                Message(
+                    "The font now contains duplicate Unicode values, please "
+                    f"check: {duplicates}"
+                )
