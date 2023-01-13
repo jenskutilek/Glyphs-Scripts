@@ -20,7 +20,7 @@ def getColorsForSelection(font):
             [
                 l.color
                 for l in font.selectedLayers
-                if l.color != 9223372036854775807
+                if l.color is not None
             ]
         )
     )
