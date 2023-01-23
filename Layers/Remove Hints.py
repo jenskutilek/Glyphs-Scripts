@@ -23,7 +23,7 @@ Glyphs.font.disableUpdateInterface()
 for layer in Glyphs.font.selectedLayers:
     delete = []
     for i, hint in enumerate(layer.hints):
-        if hint.isPostScript and hint.type in ps_hints and not hint.horizontal:
+        if hint.isPostScript and hint.type in ps_hints:
             delete.append(i)
     if delete:
         for i in reversed(delete):
