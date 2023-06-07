@@ -21,9 +21,15 @@ for c in f.classes:
     glyphs = c.code.splitlines()
     active_glyphs = []
     for name in glyphs:
+        if not name:
+            continue
+
         name = name.strip()
         if name.startswith("#NOEXPORT:"):
-            name = name[9:]
+            name = name[10:]
+            if not name:
+                continue
+
             if exporting(f, name):
                 active_glyphs.append(name)
             else:
