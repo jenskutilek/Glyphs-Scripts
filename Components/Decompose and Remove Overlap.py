@@ -1,5 +1,6 @@
 # MenuTitle: Decompose And Remove Overlap For Selection
+from GlyphsApp import Glyphs
 
-for l in Glyphs.font.selectedLayers:
-    l.decomposeComponents()
-    l.removeOverlap()
+for layer in Glyphs.font.selectedLayers:
+    layer.decomposeComponents()
+    layer.removeOverlap()

@@ -6,5 +6,5 @@ from __future__ import (
     unicode_literals,
 )
 
-for l in Glyphs.font.selectedLayers:
-    l.decomposeComponents()
+for layer in Glyphs.font.selectedLayers:
+    layer.decomposeComponents()

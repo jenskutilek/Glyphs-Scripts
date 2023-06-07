@@ -1,6 +1,5 @@
 # MenuTitle: Decompose Background Layers For Selection
+from GlyphsApp import Glyphs
 
-for g in Glyphs.font.glyphs:
-    for l in g.layers:
-        b = l.background
-        b.decomposeComponents()
+for layer in Glyphs.font.selectedLayers:
+    layer.background.decomposeComponents()
