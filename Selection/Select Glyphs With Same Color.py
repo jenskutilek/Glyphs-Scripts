@@ -5,6 +5,7 @@ from __future__ import (
     print_function,
     unicode_literals,
 )
+from GlyphsApp import Glyphs
 
 __doc__ = """
 Select all glyphs which have the same color as the currently selected glyph(s).
@@ -13,17 +14,9 @@ Select all glyphs which have the same color as the currently selected glyph(s).
 
 def getColorsForSelection(font):
     # Collect master colors
-    colors = list(set([l.parent.color for l in font.selectedLayers]))
+    colors = list(set([layer.parent.color for layer in font.selectedLayers]))
     # Collect layer colors except for white
-    colors += list(
-        set(
-            [
-                l.color
-                for l in font.selectedLayers
-                if l.color is not None
-            ]
-        )
-    )
+    colors += list(set([layer.color for layer in font.selectedLayers if layer.color is not None]))
     return colors
 
 
