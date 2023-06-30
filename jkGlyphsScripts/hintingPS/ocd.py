@@ -1,3 +1,4 @@
+from __future__ import annotations
 from GlyphsApp import GSNode, BOTTOMGHOST, TOPGHOST
 from typing import TYPE_CHECKING
 
