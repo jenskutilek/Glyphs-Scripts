@@ -1,21 +1,14 @@
 # MenuTitle: Export All Fonts
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+from GlyphsApp import GetFolder, Glyphs
 
-path = GetFolder(
-    message="Select Destination Folder", allowsMultipleSelection=False
-)
+path = GetFolder(message="Select Destination Folder", allowsMultipleSelection=False)
 
 if path is None:
     print("No folder was selected; aborting.")
 else:
     for font in Glyphs.fonts:
         for inst in font.instances:
-            if not inst.active:
+            if not inst.exports:
                 continue
 
             inst.generate(

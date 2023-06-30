@@ -1,10 +1,5 @@
 # MenuTitle: Report Composite Differences
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+from GlyphsApp import Glyphs
 
 sf = Glyphs.font
 sm = sf.selectedFontMaster

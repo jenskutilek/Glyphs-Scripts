@@ -1,3 +1,4 @@
-# MenuTitle: Set Autosave Interval to 300 seconds
+# Menutitle: Set Autosave Interval To 300 Seconds
+from AppKit import NSDocumentController
 
 NSDocumentController.sharedDocumentController().setAutosavingDelay_(300)

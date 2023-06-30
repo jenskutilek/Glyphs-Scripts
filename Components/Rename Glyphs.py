@@ -1,11 +1,5 @@
 # MenuTitle: Rename Glyphs
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
-
+from GlyphsApp import Glyphs
 from jkFontTools.glyphnames import get_rename_dict
 
 mapping = {
@@ -21,21 +15,23 @@ mapping = {
     "extraLowLeftStemToneBarmod": "toneBarL1",
 }
 
-d = get_rename_dict(Font.glyphs.keys(), mapping)
+font = Glyphs.font
 
-Font.disableUpdateInterface()
+d = get_rename_dict(font.glyphs.keys(), mapping)
+
+font.disableUpdateInterface()
 
 
 # Rename glyphs
 
 for old, new in d.items():
-    Font.glyphs[old].name = new
+    font.glyphs[old].name = new
 
 
 # Rename metrics keys
 # TODO: Analyze formulas and replace glyph names in them
 
-for g in Font.glyphs:
+for g in font.glyphs:
     if g.leftMetricsKey in d:
         g.leftMetricsKey = d[g.leftMetricsKey]
     if g.rightMetricsKey in d:
@@ -44,4 +40,4 @@ for g in Font.glyphs:
 
 # TODO: Rename in feature code
 
-Font.enableUpdateInterface()
+font.enableUpdateInterface()

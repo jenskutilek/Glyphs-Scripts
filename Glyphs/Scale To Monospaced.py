@@ -1,10 +1,5 @@
 # MenuTitle: Scale To Monospaced
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+from GlyphsApp import Glyphs
 
 layer = Glyphs.font.selectedLayers[0]  # current layer
 

@@ -1,2 +1,4 @@
 # MenuTitle: Disable Snapping
-Font.snapToObjects = False
+from GlyphsApp import Glyphs
+
+Glyphs.font.snapToObjects = False

@@ -1,4 +1,5 @@
 # MenuTitle: Enable Alignment for Selected Glyphs
+from GlyphsApp import Glyphs
 
 __doc__ = """
 Enables automatic alignment for all components in all selected glyphs.

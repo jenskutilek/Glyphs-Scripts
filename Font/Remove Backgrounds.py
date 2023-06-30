@@ -1,11 +1,10 @@
-# MenuTitle: Delete Backgrounds
-
+# MenuTitle: Remove Backgrounds
 from GlyphsApp import Glyphs
-
 
 __doc__ = """
 Deletes all backgrounds from all layers.
 """
+
 
 Glyphs.font.disableUpdateInterface()
 

@@ -1,10 +1,5 @@
-# MenuTitle: Add All Possible Glyphs
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+# MenuTitle: Add All Composeable Glyphs
+from GlyphsApp import Glyphs, GSComponent, GSGlyph, GSGlyphsInfo
 
 infos = GSGlyphsInfo.alloc().init()
 font = Glyphs.font
@@ -26,7 +21,9 @@ for info in infos.glyphInfos():
     component_missing = False
     for c in info.components:
         if c.name not in font.glyphs:
-            # print "Skipping %s because of missing component %s..." % (info.name, c.name)
+            print(
+                "Skipping %s because of missing component %s..." % (info.name, c.name)
+            )
             component_missing = True
             break
 

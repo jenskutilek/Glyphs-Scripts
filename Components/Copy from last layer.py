@@ -1,4 +1,5 @@
 # MenuTitle: Copy From Last Layer
+from GlyphsApp import Glyphs, GSComponent
 
 l = Glyphs.font.selectedLayers[0]
 cl = l.parent.layers[-1]

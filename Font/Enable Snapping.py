@@ -1,2 +1,4 @@
 # MenuTitle: Enable Snapping
-Font.snapToObjects = True
+from GlyphsApp import Glyphs
+
+Glyphs.font.snapToObjects = True

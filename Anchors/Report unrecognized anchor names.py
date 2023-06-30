@@ -1,10 +1,5 @@
-# MenuTitle: Report unrecognized anchor names for mark feature
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+# MenuTitle: Report Unrecognized Anchor Names For Mark Feature
+from GlyphsApp import Glyphs
 
 from re import compile
 

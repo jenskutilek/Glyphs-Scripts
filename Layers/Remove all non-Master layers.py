@@ -1,17 +1,15 @@
-# MenuTitle: Delete all non-Master layers
-# -*- coding: utf-8 -*-
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+# MenuTitle: Remove all non-Master layers
+from GlyphsApp import Glyphs
 
 __doc__ = """
-Goes through selected glyphs and deletes all glyph layers which are not a Master, Bracket or Brace layer.
+Goes through selected glyphs and deletes all glyph layers which are not a Master,
+Bracket or Brace layer.
 """
-Font = Glyphs.font
-selectedLayers = Font.selectedLayers
+
+
+font = Glyphs.font
+selectedLayers = font.selectedLayers
+
 
 def process(thisGlyph):
     count = 0
@@ -23,7 +21,8 @@ def process(thisGlyph):
             del thisGlyph.layers[i]
     return count
 
-Font.disableUpdateInterface()
+
+font.disableUpdateInterface()
 
 for thisLayer in selectedLayers:
     thisGlyph = thisLayer.parent
@@ -36,4 +35,4 @@ for thisLayer in selectedLayers:
     else:
         print("Smart layers kept in %s." % (thisGlyphName))
 
-Font.enableUpdateInterface()
+font.enableUpdateInterface()

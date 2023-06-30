@@ -1,4 +1,5 @@
-# MenuTitle: Print Global Glyph Set
+# MenuTitle: Report Global Glyph Set For All Open Files
+from GlyphsApp import Glyphs
 
 ggo = []
 

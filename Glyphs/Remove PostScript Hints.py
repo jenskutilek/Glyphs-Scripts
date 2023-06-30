@@ -1,11 +1,4 @@
-# MenuTitle: Remove Hints
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
-
+# MenuTitle: Remove PostScript Hints
 from GlyphsApp import Glyphs, TOPGHOST, STEM, BOTTOMGHOST
 
 __doc__ = """
@@ -20,8 +13,8 @@ ps_hints = [
 
 Glyphs.font.disableUpdateInterface()
 
-for l in Glyphs.font.selectedLayers:
-    g = l.parent
+for layer in Glyphs.font.selectedLayers:
+    g = layer.parent
     for layer in g.layers:
         delete = []
         for i, hint in enumerate(layer.hints):

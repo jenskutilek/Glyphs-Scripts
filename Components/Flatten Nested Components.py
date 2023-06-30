@@ -2,7 +2,7 @@
 from GlyphsApp import Glyphs
 
 
-flatten = False
+flatten = True
 
 for g in Glyphs.font.glyphs:
     if not g.export:

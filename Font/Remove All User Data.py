@@ -1,12 +1,8 @@
-# MenuTitle: Delete All User Data
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+# MenuTitle: Remove All User Data
+from GlyphsApp import Glyphs
 
-__doc__ = """Delete all hidden user data from the current font, e.g. for cleaning up after importing a UFO."""
+__doc__ = """Delete all hidden user data from the current font, e.g. for cleaning up
+after importing a UFO."""
 
 font = Glyphs.font
 

@@ -1,10 +1,5 @@
-# MenuTitle: List All Possible Glyphs
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+# MenuTitle: Report All Composeable Glyphs
+from GlyphsApp import Glyphs, GSGlyphsInfo
 
 g = Glyphs.font.glyphs
 for i in GSGlyphsInfo.alloc().init().glyphInfos():

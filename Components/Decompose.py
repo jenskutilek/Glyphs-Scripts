@@ -1,10 +1,5 @@
-# MenuTitle: Decompose Selection
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+# MenuTitle: Decompose Selected Layers
+from GlyphsApp import Glyphs
 
 for layer in Glyphs.font.selectedLayers:
     layer.decomposeComponents()
