@@ -1,18 +1,14 @@
-# MenuTitle: Autohint PS
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+# MenuTitle: Autohint Selection
+from GlyphsApp import Glyphs
+from jkGlyphsScripts.forSelected import forSelectedLayers
 
 __doc__ = """
 Autohint selected layers
 """
 
-Glyphs.font.disableUpdateInterface()
 
-for l in Glyphs.font.selectedLayers:
-    l.autohint()
+def autohint_layer(layer):
+    layer.autohint()
 
-Glyphs.font.enableUpdateInterface()
+
+forSelectedLayers(Glyphs.font, autohint_layer)

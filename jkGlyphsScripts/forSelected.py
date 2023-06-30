@@ -5,8 +5,19 @@ if TYPE_CHECKING:
     from GlyphsApp import GSFont
 
 
-def forAllLayersOfSelectedGlyphs(font: GSFont, call_function: Callable) -> None:
+def forAllLayersOfSelectedGlyphs(
+    font: GSFont, call_function: Callable, **kwargs
+) -> None:
+    font.disableUpdateInterface()
     for selected_layer in font.selectedLayers:
         glyph = selected_layer.parent
         for layer in glyph.layers:
-            call_function(layer)
+            call_function(layer, **kwargs)
+    font.enableUpdateInterface()
+
+
+def forSelectedLayers(font: GSFont, call_function: Callable, **kwargs) -> None:
+    font.disableUpdateInterface()
+    for selected_layer in font.selectedLayers:
+        call_function(selected_layer, **kwargs)
+    font.enableUpdateInterface()
