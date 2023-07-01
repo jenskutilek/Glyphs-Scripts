@@ -1,8 +1,14 @@
 # MenuTitle: Sort Classes By Name And Active Status
-__doc__="""
-Sort OpenType classes alphabetically by name, and sort inactive classes to the
-end.
+from jkGlyphsHelpers.forAll import forCurrentFont
+
+__doc__ = """
+Sort OpenType classes of the current font alphabetically by name, and sort inactive
+classes towards the end.
 """
 
-f = Glyphs.font
-f.classes = sorted(f.classes, key=lambda x: (not x.active, x.name.casefold()))
+
+def sort_ot_classes(font):
+    font.classes = sorted(font.classes, key=lambda x: (not x.active, x.name.casefold()))
+
+
+forCurrentFont(sort_ot_classes)
