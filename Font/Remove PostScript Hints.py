@@ -1,6 +1,7 @@
 # MenuTitle: Remove PostScript Hints
 
-from GlyphsApp import Glyphs, TOPGHOST, STEM, BOTTOMGHOST
+from GlyphsApp import TOPGHOST, STEM, BOTTOMGHOST
+from jkGlyphsHelpers.forAll import forAllLayersOfAllGlyphs
 
 __doc__ = """
 Remove PostScript hints in all glyphs of the current font
@@ -12,16 +13,15 @@ ps_hints = [
     BOTTOMGHOST,
 ]
 
-Glyphs.font.disableUpdateInterface()
 
-for g in Glyphs.font.glyphs:
-    for layer in g.layers:
-        delete = []
-        for i, hint in enumerate(layer.hints):
-            if hint.isPostScript and hint.type in ps_hints:
-                delete.append(i)
-        if delete:
-            for i in reversed(delete):
-                del layer.hints[i]
+def remove_hints(layer):
+    delete = []
+    for i, hint in enumerate(layer.hints):
+        if hint.isPostScript and hint.type in ps_hints:
+            delete.append(i)
+    if delete:
+        for i in reversed(delete):
+            del layer.hints[i]
 
-Glyphs.font.enableUpdateInterface()
+
+forAllLayersOfAllGlyphs(remove_hints)
