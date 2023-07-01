@@ -1,7 +1,6 @@
 # MenuTitle: Apply UFO Layer Colors Directly
 from AppKit import NSColor
-from GlyphsApp import Glyphs
-from jkGlyphsScripts.forSelected import forAllLayersOfSelectedGlyphs
+from jkGlyphsHelpers.forSelected import forAllLayersOfSelectedGlyphs
 
 
 MARK_KEY = "com.typemytype.robofont.mark"
@@ -15,4 +14,4 @@ def applyMarkColor(layer):
         )
 
 
-forAllLayersOfSelectedGlyphs(Glyphs.font, applyMarkColor)
+forAllLayersOfSelectedGlyphs(applyMarkColor)

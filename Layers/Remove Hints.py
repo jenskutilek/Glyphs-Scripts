@@ -1,6 +1,6 @@
 # MenuTitle: Remove Hints
-from GlyphsApp import Glyphs, TOPGHOST, STEM, BOTTOMGHOST
-from jkGlyphsScripts.forSelected import forSelectedLayers
+from GlyphsApp import TOPGHOST, STEM, BOTTOMGHOST
+from jkGlyphsHelpers.forSelected import forSelectedLayers
 
 
 __doc__ = """
@@ -24,4 +24,4 @@ def remove_postscript_hints(layer):
             del layer.hints[i]
 
 
-forSelectedLayers(Glyphs.font, remove_postscript_hints)
+forSelectedLayers(remove_postscript_hints)

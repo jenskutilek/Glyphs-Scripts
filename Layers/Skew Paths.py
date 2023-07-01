@@ -1,7 +1,7 @@
 # MenuTitle: Skew Only Paths and Anchors By 13 Degrees
 from AppKit import NSAffineTransform
 from GlyphsApp import Glyphs
-from jkGlyphsScripts.forSelected import forSelectedLayers
+from jkGlyphsHelpers.forSelected import forSelectedLayers
 import math
 
 __doc__ = """
@@ -23,7 +23,7 @@ def slantLayers(layers, angle):
     slant = math.tan(skewAngle * math.pi / 180.0)
     transform.shearXBy_atCenter_(slant, -xHeight / 2.0)
 
-    forSelectedLayers(Glyphs.font, slantLayer, transform=transform)
+    forSelectedLayers(slantLayer, transform=transform)
 
 
 skewAngle = 13
