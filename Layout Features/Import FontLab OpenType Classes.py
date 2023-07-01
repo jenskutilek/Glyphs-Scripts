@@ -32,7 +32,10 @@ def import_flc_file(flc_path: Path, font: GSFont):
         Message("The file is too short.")
     else:
         if not lines[0].startswith(r"%%FONTLAB CLASSES"):
-            Message("The file is missing the class file header. Does it have the " "correct type?")
+            Message(
+                "The file is missing the class file header. Does it have the "
+                "correct type?"
+            )
         else:
             i = 0
             classes: List[FLClass] = []
@@ -48,7 +51,9 @@ def import_flc_file(flc_path: Path, font: GSFont):
 
                 elif line.startswith("%%GLYPHS"):
                     if cur is None:
-                        Message(f"No current class while parsing line #{i}, aborting import")
+                        Message(
+                            f"No current class while parsing line #{i}, aborting import"
+                        )
                         return
 
                     if not cur.name.startswith("_"):
@@ -69,11 +74,11 @@ def import_flc_file(flc_path: Path, font: GSFont):
                         # Only process non-kerning classes
                         classes.append(cur)
                     cur = None
-                
+
                 elif line.startswith("%%KERNING"):
                     # Ignore kerning flags
                     pass
-                
+
                 elif line.strip() == "":
                     pass
 
