@@ -1,23 +1,16 @@
 # MenuTitle: Apply UFO PS Hints
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+from __future__ import annotations
 
-import xml.etree.ElementTree as ET
+from GlyphsApp import BOTTOMGHOST, OFFCURVE, TOPGHOST, Glyphs, GSHint
 
-hintkey = "com.adobe.type.autohint"
+hintkey = "com.adobe.type.autohint.v2"
 
 
-def findNodeWithCoordinate(
-    layer, pos, dist_direction=0, compare_pos=0, tolerance=1
-):
+def findNodeWithCoordinate(layer, pos, dist_direction=0, compare_pos=0, tolerance=1):
     # dist_direction 0 = vstem, we are looking for an x coordinate
     # dist_direction 1 = hstem, we are looking for a y coordinate
-    # compare_pos is the secondary coordinate that will be compared to the current node's secondary coordinate
-    # in order to find the closest matching node
+    # compare_pos is the secondary coordinate that will be compared to the current
+    # node's secondary coordinate in order to find the closest matching node
     candidates = []
     for p in layer.paths:
         for n in p.nodes:
@@ -43,9 +36,11 @@ def getHint(
     dist_direction,
     pos,
     width,
-    guess_ghost_direction=True,
     point_snap_tolerance=0,
 ):
+    if dist_direction == 1 and width in (-20, -21):
+        pos = pos + width
+
     originNode = findNodeWithCoordinate(
         layer,
         pos,
@@ -63,25 +58,6 @@ def getHint(
             newHint.type = TOPGHOST
         else:
             newHint.type = BOTTOMGHOST
-
-            if guess_ghost_direction:
-                # vfb2ufo stores all ghost links as -21 ...
-                # we have to guess if it should rather be a top ghost hint
-                for z in layer.parent.parent.masters[
-                    layer.associatedMasterId
-                ].alignmentZones:
-                    if z.size > 0:
-                        if z.position <= pos <= z.position + z.size:
-                            newHint.type = TOPGHOST
-                            break
-            if newHint.type == BOTTOMGHOST:
-                # guess again
-                bbox = layer.bounds
-                if (
-                    pos
-                    == bbox.origin[dist_direction] + bbox.size[dist_direction]
-                ):
-                    newHint.type = TOPGHOST
 
         newHint.originNode = originNode
         newHint.horizontal = dist_direction
@@ -105,50 +81,51 @@ def getHint(
     return newHint
 
 
-def applyHintsToLayer(
-    layer, guess_ghost_direction=True, point_snap_tolerance=0
-):
+def applyHintsToLayer(layer, point_snap_tolerance=0):
 
     # Clear the current Glyphs hints
     layer.hints = []
 
-    # Read XML data from the Adobe hinting from the UFO lib
-    xml = layer.parent.userData[hintkey]
-    if xml is None:
+    # Read data from the Adobe V2 hinting from the UFO lib
+    data = layer.userData.get(hintkey)
+    if data is None:
         return None
 
-    # Parse the XML
-    root = ET.fromstring(xml)
-    hintsets = root.findall("hintset")
+    # Parse the data
     seen_hints = []
-    for hintset in hintsets:
-        for stem in hintset:
-            if stem.tag == "vstem":
-                hint_list = [(0, stem.attrib["pos"], stem.attrib["width"])]
+    for hintset in data.get("hintSetList", []):
+        for stem in hintset.get("stems", []):
+            stemlist = stem.split(" ")
+            if len(stemlist) != 3:
+                print(
+                    f"Unrecognized stem format in glyph /{layer.parent.name}: '{stem}'"
+                )
+                continue
 
-            elif stem.tag == "hstem":
-                hint_list = [(1, stem.attrib["pos"], stem.attrib["width"])]
+            cmd, pos, width = stemlist
+            if cmd == "vstem":
+                hint_list = [(0, pos, width)]
 
-            elif stem.tag == "vstem3":
-                values = stem.attrib["stem3List"].split(",")
-                hint_list = [
-                    (0, values[i], values[i + 1])
-                    for i in range(0, len(values), 2)
-                ]
+            elif cmd == "hstem":
+                hint_list = [(1, pos, width)]
 
-            elif stem.tag == "hstem3":
-                values = stem.attrib["stem3List"].split(",")
-                hint_list = [
-                    (1, values[i], values[i + 1])
-                    for i in range(0, len(values), 2)
-                ]
+            # elif cmd == "vstem3":
+            #     values = stem.attrib["stem3List"].split(",")
+            #     hint_list = [
+            #         (0, values[i], values[i + 1]) for i in range(0, len(values), 2)
+            #     ]
+
+            # elif cmd == "hstem3":
+            #     values = stem.attrib["stem3List"].split(",")
+            #     hint_list = [
+            #         (1, values[i], values[i + 1]) for i in range(0, len(values), 2)
+            #     ]
 
             else:
                 print(
-                    "Unknown element '%s' in hintset of glyphs /%s."
-                    % (stem.tag, layer.parent.name)
+                    f"Unknown element '{cmd}' in hintset of glyph {layer.parent.name}."
                 )
-                print(xml)
+                print(data)
                 continue
 
             for dist_direction, pos, width in hint_list:
@@ -157,28 +134,21 @@ def applyHintsToLayer(
                     dist_direction,
                     float(pos),
                     float(width),
-                    guess_ghost_direction,
                     point_snap_tolerance,
                 )
                 if hint is not None:
                     if (dist_direction, pos, width) not in seen_hints:
                         layer.hints.append(hint)
                         seen_hints.append((dist_direction, pos, width))
-                    # else skip hint from a different hint set with the same direction, position and width
+                    # else skip hint from a different hint set with the same direction,
+                    # position and width
                 else:
                     print(
-                        "No suitable points to attach %s at %s = %g, width %g in glyph /%s could be found."
-                        % (
-                            stem.tag,
-                            "xy"[dist_direction],
-                            float(pos),
-                            float(width),
-                            layer.parent.name,
-                        )
+                        f"No suitable points to attach {cmd} at "
+                        f"{'xy'[dist_direction]} = {pos}, width {width} in glyph "
+                        f"/{layer.parent.name} could be found."
                     )
 
 
 for layer in Glyphs.font.selectedLayers:
-    applyHintsToLayer(
-        layer, guess_ghost_direction=True, point_snap_tolerance=0
-    )
+    applyHintsToLayer(layer, point_snap_tolerance=0)
