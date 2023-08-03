@@ -38,7 +38,7 @@ def getHint(
     width,
     point_snap_tolerance=0,
 ):
-    if dist_direction == 1 and width in (-20, -21):
+    if dist_direction == 1 and width == -21:
         pos = pos + width
 
     originNode = findNodeWithCoordinate(
