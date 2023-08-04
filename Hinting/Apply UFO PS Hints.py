@@ -3,7 +3,8 @@ from __future__ import annotations
 
 from GlyphsApp import BOTTOMGHOST, OFFCURVE, TOPGHOST, Glyphs, GSHint
 
-hintkey = "com.adobe.type.autohint.v2"
+hintkey_adobe = "com.adobe.type.autohint.v2"
+hintkey_ufo = "public.postscript.hints"
 
 
 def findNodeWithCoordinate(layer, pos, dist_direction=0, compare_pos=0, tolerance=1):
@@ -87,9 +88,11 @@ def applyHintsToLayer(layer, point_snap_tolerance=0):
     layer.hints = []
 
     # Read data from the Adobe V2 hinting from the UFO lib
-    data = layer.userData.get(hintkey)
+    data = layer.userData.get(hintkey_adobe)
     if data is None:
-        return None
+        data = layer.userData.get(hintkey_ufo)
+        if data is None:
+            return None
 
     # Parse the data
     seen_hints = []
