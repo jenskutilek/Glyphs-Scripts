@@ -1,4 +1,4 @@
-# MenuTitle: Sort Classes By Name And Active Status
+#MenuTitle: Sort Classes By Name And Active Status
 from jkGlyphsHelpers.forAll import forCurrentFont
 
 __doc__ = """
