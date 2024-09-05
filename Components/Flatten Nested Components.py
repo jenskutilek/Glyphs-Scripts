@@ -1,4 +1,4 @@
-# MenuTitle: Report Nested Components
+# MenuTitle: Flatten Nested Components
 from GlyphsApp import Glyphs
 
 
