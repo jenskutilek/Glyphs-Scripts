@@ -15,7 +15,7 @@ def sort_ot_classes(font):
         Message("The file does not contain an imported UFO lib.")
         return
 
-    group_order = ufolib.get("com.lucasfonts.vfblib.groupOrder")
+    group_order = ufolib.get("public.groupOrder")
     if group_order is None:
         Message("The imported UFO lib does not contain a group order list.")
         return
