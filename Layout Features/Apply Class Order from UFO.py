@@ -20,12 +20,13 @@ def sort_ot_classes(font):
         Message("The imported UFO lib does not contain a group order list.")
         return
     font_groups = [c.name for c in font.classes]
-    missing_from_group_order = set(font_groups) - set(group_order)
-    unsortable = [c for c in font.classes if c.name in missing_from_group_order]
-    sortable = [c for c in font.classes if c.name not in missing_from_group_order]
+    missing = set(font_groups) - set(group_order)
+    unsortable = [c for c in font.classes if c.name in missing]
+    sortable = {c.name: c for c in font.classes if c.name not in missing}
 
     # Filter duplicates and sort by index in group_order
-    sorted_groups = sorted(sortable, key=lambda x: (group_order.index(x.name)))
+    sorted_groups = sorted(list(sortable.values()),
+                           key=lambda x: (group_order.index(x.name)))
     # print([g.name for g in sorted_groups])
 
     font.classes = sorted_groups + unsortable
