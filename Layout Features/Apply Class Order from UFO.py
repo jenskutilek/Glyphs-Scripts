@@ -1,4 +1,4 @@
-#MenuTitle: Apply Class Order Imported from UFO
+# MenuTitle: Apply Class Order Imported from UFO
 
 from GlyphsApp import Message
 from jkGlyphsHelpers.forAll import forCurrentFont
@@ -19,12 +19,16 @@ def sort_ot_classes(font):
     if group_order is None:
         Message("The imported UFO lib does not contain a group order list.")
         return
+    font_groups = [c.name for c in font.classes]
+    missing_from_group_order = set(font_groups) - set(group_order)
+    unsortable = [c for c in font.classes if c.name in missing_from_group_order]
+    sortable = [c for c in font.classes if c.name not in missing_from_group_order]
 
     # Filter duplicates and sort by index in group_order
-    font.classes = sorted(
-        list({c.name: c for c in font.classes}.values()),
-        key=lambda x: (group_order.index(x.name)),
-    )
+    sorted_groups = sorted(sortable, key=lambda x: (group_order.index(x.name)))
+    # print([g.name for g in sorted_groups])
+
+    font.classes = sorted_groups + unsortable
 
 
 forCurrentFont(sort_ot_classes)
