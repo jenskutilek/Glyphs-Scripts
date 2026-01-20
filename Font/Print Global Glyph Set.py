@@ -4,7 +4,9 @@ from GlyphsApp import Glyphs
 ggo = []
 
 for f in Glyphs.fonts:
-	ggo += [g.name for g in f.glyphs if g.export]
+    ggo += [g.name for g in f.glyphs if g.export]
 
-ggo = list(set(ggo))
-print(" ".join(ggo))
+ggs = list(set(ggo))
+ggt = tuple(ggo)  # It's faster to sort by a tuple
+ggs.sort(key=lambda x: ggt.index(x))
+print(" ".join(ggs))
