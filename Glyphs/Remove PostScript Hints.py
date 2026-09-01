@@ -16,12 +16,8 @@ Glyphs.font.disableUpdateInterface()
 for layer in Glyphs.font.selectedLayers:
     g = layer.parent
     for layer in g.layers:
-        delete = []
-        for i, hint in enumerate(layer.hints):
+        for hint in list(layer.hints):
             if hint.isPostScript and hint.type in ps_hints:
-                delete.append(i)
-        if delete:
-            for i in reversed(delete):
-                del layer.hints[i]
+                layer.hints.remove(hint)
 
 Glyphs.font.enableUpdateInterface()
